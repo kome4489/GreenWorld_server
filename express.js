@@ -78,7 +78,7 @@ app.get('/', function(req, res) {
 // });
 
 models.sequelize.sync().then(() => {
-    app.listen(3000, () => {
-        console.log('App listening on port 3000.');
+    app.listen(8000, () => {
+        console.log('App listening on port 8000.');
     });
 });
