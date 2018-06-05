@@ -5,6 +5,7 @@ var bodyParser = require('body-parser');
 var cookieParser = require('cookie-parser');
 var path = require('path');
 var models = require('./models');
+var config = require('./config/config');
 
 app = express();
 
@@ -12,6 +13,9 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 app.use(cookieParser());
+
+// application variables
+app.set('apiSecret', config.apiSecret);
 
 // セッションの設定を行います.
 app.use(session({
@@ -78,7 +82,7 @@ app.get('/', function(req, res) {
 // });
 
 models.sequelize.sync().then(() => {
-    app.listen(80, () => {
-        console.log('App listening on port 80.');
+    app.listen(8000, () => {
+        console.log('App listening on port 8000.');
     });
 });

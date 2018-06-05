@@ -11,14 +11,25 @@ router.post('/', function(req, res) {
     const userId = req.body.userId;
     const password = req.body.password;
 
-    models.user.findAll({
+    models.user.findOne({
         where: {
             userId: userId,
             password: password,
         }}).then((result) => {
-        if (result && result.length > 0) {
+        if (result) {
             req.session.userId = userId;
-            res.redirect('/home');
+
+            var user = {
+                userId: userId,
+                password: password,
+            }
+            var token = jwt.sign(user, app.get('apiSecret'), {
+                expiresIn: '24h'
+              });
+
+            res.setHeader('x-access-token', token);
+
+            res.sendFile(path.resolve(__dirname, '../www/home/index.html'));
         } else {
             res.render('/login', {
                 userId: userId,
