@@ -48,6 +48,9 @@ router.use('/home', home);
 const login = require('./router/login');
 router.use('/login', login);
 
+const chat = require('./router/chat');
+router.use('/chat', chat);
+
 app.use('/', router);
 
 app.use(express.static('www'));
