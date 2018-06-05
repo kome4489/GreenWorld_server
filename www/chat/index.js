@@ -58,7 +58,7 @@ function chat() {
 document.addEventListener ('keydown',function(e){
     var t = e.target;
     if(t.nodeName=="INPUT" && t.name=="chatInput" && e.keyCode==13){
-      document.getElementsByTagName("button")[0].click();
+      document.getElementById('chatOutput').click();
       e.preventDefault();
     }
 });

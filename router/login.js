@@ -31,13 +31,11 @@ router.post('/', function(req, res) {
 
             res.setHeader('x-access-token', token);
 
-            res.sendFile(path.resolve(__dirname, '../www/home/index.html'));
+            req.session.token = token;
+
+            res.redirect('/home');
         } else {
-            res.render('/login', {
-                userId: userId,
-                password: '',
-                message: 'fail',
-            });
+            res.redirect('/login');
         }
     }).catch(err => {
         console.log(err);

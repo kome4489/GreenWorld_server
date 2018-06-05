@@ -17,10 +17,29 @@ app.use(cookieParser());
 // application variables
 app.set('apiSecret', config.apiSecret);
 
+app.use(function (req, res, next) {
+
+    // Website you wish to allow to connect
+    res.setHeader('Access-Control-Allow-Origin', 'http://www.silvereye.work');
+
+    // Request methods you wish to allow
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+
+    // Request headers you wish to allow
+    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+
+    // Set to true if you need the website to include cookies in the requests sent
+    // to the API (e.g. in case you use sessions)
+    res.setHeader('Access-Control-Allow-Credentials', true);
+
+    // Pass to next layer of middleware
+    next();
+});
+
 // セッションの設定を行います.
 app.use(session({
     // 必須項目（署名を行うために使います）
-    secret : 'greenworld', 
+    secret : app.get('apiSecret'), 
     // 推奨項目（セッション内容に変更がない場合にも保存する場合にはtrue）
     resave : false,               
     // 推奨項目（新規にセッションを生成して何も代入されていなくても値を入れる場合にはtrue）
@@ -30,8 +49,11 @@ app.use(session({
     // クッキー名（デフォルトでは「connect.sid」）
     name : 'sessionId',
     // 一般的なCookie指定
-    // デフォルトは「{ path: '/', httpOnly: true, secure: false, maxAge: null }」
     cookie: {
+        // domain:'.silvereye.work',
+        // path: '/api',
+        httpOnly: true,
+        secure: false,
         // 生存期間（単位：ミリ秒）
         maxAge : 1000 * 60 * 60 * 24 * 30, // 30日
     }
@@ -51,12 +73,15 @@ router.use('/login', login);
 const chat = require('./router/chat');
 router.use('/chat', chat);
 
+const test = require('./router/test');
+router.use('/test', test);
+
 app.use('/', router);
 
 app.use(express.static('www'));
 app.get('/', function(req, res) {
-    let userId = req.session.userId;
-    if (userId !== undefined) {
+    if (req.session !== undefined && req.session.userId !== undefined) {
+        var userId = req.session.userId;
         res.redirect('/home');
     } else {
         res.redirect('/login');

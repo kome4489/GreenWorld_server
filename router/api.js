@@ -4,9 +4,8 @@ const models = require('../models');
 const router = express.Router();
 
 router.use((req, res, next) => {
-    var ApiToken = req.headers['x-access-token'];
+    var ApiToken = req.session.token;
     var AuthHeader = req.headers['authorization'];
-    console.log(ApiToken);
 
     if (ApiToken !== undefined) {
         jwt.verify(ApiToken, app.get('apiSecret'), function(err, decoded) {
@@ -16,7 +15,7 @@ router.use((req, res, next) => {
                 message: 'Invalid token'
               });
             }
-    
+
             // if token valid -> save token to request for use in other routes
             req.decoded = decoded;
             next();
@@ -64,5 +63,8 @@ router.use('/user', user);
 
 const home = require('./api/home');
 router.use('/home', home);
+
+const plant = require('./api/plant');
+router.use('/plant', plant);
 
 module.exports = router;
