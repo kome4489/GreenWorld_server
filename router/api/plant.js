@@ -4,7 +4,12 @@ const router = express.Router();
 
 router.post('/search', (req, res) => {
     const name = req.body.name;
-    models.plant.findAll({ where: { name: name }}).then((result) => {
+
+    let params = {};
+    if (name !== null && name !== '' && name !== undefined) {
+        params = { where: { name: name }};
+    }
+    models.plant.findAll(params).then((result) => {
         if (result && result.length > 0) {
             res.status(200);
             res.json({
