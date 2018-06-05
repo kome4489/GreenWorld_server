@@ -1,5 +1,6 @@
 const express = require('express');
-var path = require('path');
+const path = require('path');
+const jwt = require('jsonwebtoken');
 const router = express.Router();
 const models = require('../models');
 
@@ -15,7 +16,8 @@ router.post('/', function(req, res) {
         where: {
             userId: userId,
             password: password,
-        }}).then((result) => {
+        },
+    }).then((result) => {
         if (result) {
             req.session.userId = userId;
 
@@ -38,6 +40,7 @@ router.post('/', function(req, res) {
             });
         }
     }).catch(err => {
+        console.log(err);
         res.redirect('/login');
     });
 });
