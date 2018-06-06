@@ -5,14 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <title> react-redux </title>
-    <script type="text/javascript" src="./chat/index.js"></script>
+    <script type="text/javascript" src="./index.js"></script>
     </head>
     <body>
+        <label>会話開始したい場合に、"会話システム起動"を入力してください。</label>
         <div>
             <input name="chatInput" id="chatInput">
         </div>
         <div>
-            <button onclick="return chat()">chat</button>
+            <button id="chatSend" name="chatSend" onclick="return chat()">chat</button>
+            <button id="chatClear" name="chatClear" onclick="return chatClear()">clear</button>
         </div>
         <div id="chatOutput" style="display: grid;">
         </div>
