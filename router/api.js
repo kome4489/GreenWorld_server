@@ -67,4 +67,7 @@ router.use('/home', home);
 const plant = require('./api/plant');
 router.use('/plant', plant);
 
+const gps = require('./api/gps');
+router.use('/gps', gps);
+
 module.exports = router;
