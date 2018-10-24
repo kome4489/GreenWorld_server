@@ -76,6 +76,9 @@ router.use('/chat', chat);
 const test = require('./router/test');
 router.use('/test', test);
 
+const address = require('./router/api/address');
+router.use('/address', address);
+
 app.use('/', router);
 
 app.use(express.static('www'));
