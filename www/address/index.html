@@ -8,12 +8,12 @@
     </head>
     <body>
         <div>
-            <input name="chatInput" id="chatInput">
-        </div>
-        <div>
             <button onclick="return test()">住所取得</button>
         </div>
         <div id="chatOutput" style="display: grid;">
+            <div>経度：<label id="latitude" for="latitude" accesskey="f">なし</label><br></div>
+            <div>緯度：<label id="longitude" for="longitude" accesskey="f">なし</label><br></div>
+            <div>住所：<label id="address" for="address" accesskey="f">なし</label><br></div>
         </div>
         <script>
             function test() {
@@ -22,6 +22,7 @@
                         var latitude = location.coords.latitude;
                         var longitude = location.coords.longitude;
 
+                        // var url = 'http://localhost:8000/address/search';
                         var url = 'https://www.silvereye.work/address/search';
                         fetch(url, {
                             method: 'POST',
@@ -37,6 +38,19 @@
                         }).then(response => {
                             response.json().then(json => {
                                 console.log(json);
+                                var prefecture = json.address.prefecture;
+                                var city = json.address.city;
+                                var chome = json.address.chome;
+                                var common = json.address.common;
+                                var street = json.address.street;
+
+                                var address = prefecture.concat(city);
+                                address = address.concat(chome);
+                                address = address.concat(common);
+                                address = address.concat(street);
+                                document.getElementById("address").innerText = address;
+                                document.getElementById("latitude").innerText = latitude;
+                                document.getElementById("longitude").innerText = longitude;
                             })
                         }).catch(err => {
                             console.log(err);
